@@ -7,6 +7,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const path = require('path');
 
 // Initialize Express app
 const app = express();
@@ -24,6 +25,15 @@ mongoose.connect(process.env.MONGODB_URI)
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
+
+// Routes
+const userRoutes = require('./routes/user');
+app.use('/api/auth', userRoutes);
+
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
+const sauceRoutes = require('./routes/sauce');
+app.use('/api/sauces', sauceRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 3000;
